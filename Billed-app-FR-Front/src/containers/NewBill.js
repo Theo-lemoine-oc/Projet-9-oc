@@ -21,11 +21,13 @@ export default class NewBill {
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
+    let extension = fileName.split('.').pop();
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)
 
-    this.store
+    if(extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
+      this.store
       .bills()
       .create({
         data: formData,
@@ -39,6 +41,10 @@ export default class NewBill {
         this.fileUrl = fileUrl
         this.fileName = fileName
       }).catch(error => console.error(error))
+    } else {
+      alert('Le fichier que vous devez joindre doit avoir comme extension : png, jpg ou jpeg')
+    }
+    
   }
   handleSubmit = e => {
     e.preventDefault()
